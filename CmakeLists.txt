@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.15)
+project(LabMayhemProject CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Chỉ đường cho CMake tìm đến đúng thư mục SFML 3.0 trong ucrt64
+set(SFML_DIR "C:/msys64/ucrt64/lib/cmake/SFML")
+
+# SỬA TẠI ĐÂY: Viết hoa chữ cái đầu của các thành phần (Graphics, Window, System)
+find_package(SFML 3.0 COMPONENTS Graphics Window System REQUIRED)
+
+# Tạo file thực thi từ file main.cpp của bạn
+add_executable(main main.cpp)
+
+# Cấu hình liên kết kiểu mới bắt buộc của SFML 3.0
+target_link_libraries(main PRIVATE SFML::Graphics SFML::Window SFML::System)
