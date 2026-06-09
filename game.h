@@ -1,6 +1,5 @@
 #pragma once
-#ifndef GAME_H
-#define GAME_H
+
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -10,117 +9,101 @@
 #include <windows.h>
 #include <algorithm>
 #include <ctime>
+#include <memory>
+#include <fstream>
 
-//cac trang thai chay beham hra
 enum class Stav_Hra {
-    Hlavni_menu,       // Menu chính (Có nút Play và Exit)
-    InputName,      // Màn hình nhập tên nhân vật bằng chữ đồ họa
-    Ukazat_rules,      // Hiện rules.png + dòng chữ "Stiskni ENTER pro hru"
-    Ukazat_lvl, // Hiện ảnh hướng dẫn của từng level (lvl1.png -> lvl5.png)
-    AskQuestion,    // Màn hình câu hỏi + Ô nhập câu trả lời đồ họa
-    WrongAnswer,    // Màn hình báo sai, hỏi chơi lại không (ano/ne)
-    hadat_heslo,     // Vòng đoán 5 chữ số mật mã cuối game (Dựa trên file treti_verze.cpp)
-    OpenChest,      // Màn hình mở rương kho báu thành công (Chiến thắng)
-    GameOver        // Thua cuộc / Thoát game (Chuyển sang background gameover)
+    Hlavni_menu,       
+    Ukazat_rules,      
+    InputName,         
+    Ukazat_lvl,        
+    AskQuestion,       
+    WrongAnswer,       
+    hadat_heslo,       
+    OpenChest,         
+    GameOver           
 };
 
-class Player {
-private:
+struct Player {
     std::string name;
-public:
-    void Zadat_jmeno(std::string jmeno) { name = jmeno; }
-    std::string getName() const { return name; }
 };
 
-class Otazka {
-private:
+struct Otazka {
     int poradi;
-    int typ; // 0 = chữ (văn bản), 1 = số
-    std::string odpoved; // Nội dung câu hỏi hiển thị
-    std::vector<std::string> spravne_text;
-    int spravne_cislo;
-public:
-    Otazka(int stt, int typy, std::string cau_hoi)
-        : poradi(stt), typ(typy), odpoved(cau_hoi), spravne_cislo(0) {}
-
-    int getporadi() const { return poradi; }
-    int getTyp() const { return typ; }
-    std::string getOdpoveved() const { return odpoved; }
-    
-    std::vector<std::string> getspravny_text() const { return spravne_text; }
-    void settext_odpoved(const std::vector<std::string>& odpoved_text) { spravne_text = odpoved_text; }
-
-    int getspravne_Cislo() const { return spravne_cislo; }
-    void setSpravne_Cislo(int odpoved_so) { spravne_cislo = odpoved_so; }
+    int typy;  // 0 = text, 1 = cislo
+    std::string question;
+    std::vector<std::string> spravny_text;
+    int spravny_cislo;
 };
 
-class Level {
-private:
+struct Level {
     std::string jmeno_level;
-    std::string link_postup; // Đường dẫn ảnh hướng dẫn (lvl1.png, lvl2.png...)
-    std::vector<Otazka> seznam_otazky;
-    std::string link_video;  // Đường dẫn video phản ứng thành công
-public:
-    Level(std::string nameLevel, std::string link_p, std::string link_v)
-        : jmeno_level(nameLevel), link_postup(link_p), link_video(link_v) {}
-
-    void prijat_otazky(const Otazka &questions) { seznam_otazky.push_back(questions); }
-    std::string getLink_P() const { return link_postup; }
-    std::string getLink_V() const { return link_video; }
-    std::vector<Otazka> getSeznam_otazka() const { return seznam_otazky; }
-    std::string getJmenoLevel() const { return jmeno_level; }
+    std::string link_p; 
+    std::vector<Otazka> seznam;
+    std::string link_v;
 };
 
 class Game {
 private:
     sf::RenderWindow okno;
     sf::Font font;
-    sf::Music bg_song;
+    static sf::Music bg_song;
 
-    // Các tài nguyên hình nền (Backgrounds)
+    // Bộ quản lý hệ thống Texture đồ họa theo kịch bản mới
     sf::Texture tex_bgMenu;
-    sf::Texture tex_bgGame;
-    sf::Texture tex_bgGameOver;
-    sf::Sprite sprite_bg;
+    sf::Texture tex_gameBg;
+    sf::Texture tex_rules;
+    sf::Texture tex_zadaiCharakteru;
+    sf::Texture tex_zadejOdpoved;
+    sf::Texture tex_chyba;
+    sf::Texture tex_gameOverBg;
+    sf::Texture tex_zadejteHeslo;
+    sf::Texture tex_tvojePokladJe;
     sf::Texture tex_btnPlay;
-    sf::Texture tex_btnExit;
 
-    // Biến quản lý logic trò chơi
+    sf::Sprite sprite_bg;
+
+    // Quản lý Animation GIF cho dòng chữ stiskni_enter_pro_hra
+    std::vector<sf::Texture> gif_frames;
+    size_t current_gif_frame;
+    sf::Clock gif_clock;
+
+    // Biến điều khiển trạng thái và logic nội bộ
     Stav_Hra stav;
     Player Hrac;
     std::vector<Level> seznam;
-    std::vector<int> heslo; // Chuỗi mật mã bí mật gồm 5 chữ số
-    int pocet_chyb;       // Tổng số lỗi tích lũy qua các level
+    std::vector<int> heslo; 
+    int pocet_chyb;       
     
     size_t current_level_idx;
     size_t current_question_idx;
     std::string player_input; 
 
-    // Biến xử lý cho vòng đoán số cuối game 
-    int index_hadani;    // Đang đoán đến chữ số thứ mấy (0 -> 4)
-    int zbylo_pokusu; // Số lượt đoán còn lại cho chữ số hiện tại
+    // Hệ thống biến cho vòng đoán mật mã phức hợp
+    int zbylo_pokusu; 
+    std::vector<std::string> feedback_lines; 
+    std::string trung_khớp_thong_bao;
 
+    // Quản lý thời gian chuyển cảnh tự động
     sf::Clock timer;
-    // Khởi tạo hệ thống dữ liệu nội bộ
+    bool timer_started;
+
     void tvorit_heslo();
     void tvorit_level();
-    void load_bg();
+    void load_assets();
     void pocet_pokusu_podle_chyb();
+    void draw_animated_gif_text(float x, float y);
     
-    // Hàm bổ trợ xử lý chuỗi
     std::string naMale(std::string text);
     bool kontrolovatOdpoved(const std::string& answer, const std::vector<std::string>& correct_answers);
-    void opokovat_current_lvl();
-
-    // Hệ thống bắt sự kiện và xử lý đồ họa SFML 3.0
-    void zpracovat_udalosti();
-    void zpracovat_text_vstup(char znak);
-    void zpracovat_tisk_emteru();
-    void vykreslit();
+    std::string filter_first_number_string(const std::string& input);
 
 public:
     Game();
     void play();
+    void zpracovat_udalosti();
+    void zpracovat_textovy_vstup(char znak);
+    void zpracovat_stisk_enteru();
+    void vykreslit();
 };
 
-#endif
