@@ -1,10 +1,11 @@
 #include "game.h"
 #include <fstream>
 
-Game::Game()
-: okno(sf::VideoMode({1600,1000}), "The Etherium - Awakening")
-, sprite_bg(tex_bgGame){
-
+Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Edition"),
+    sprite_bg(tex_bgMenu){
+    system("chcp 65001"); // UTF-8 podpora
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
     okno.setFramerateLimit(60);
     srand(static_cast<unsigned int>(time(0)));
 
@@ -117,9 +118,16 @@ void Game:: tvorit_level(){
 
 void Game:: load_bg(){
     tex_bgMenu.loadFromFile("Obrazky/background_menu.png");
-    tex_bgGame.loadFromFile("Obrazky/background_game.png"); 
+    tex_bgGame.loadFromFile("Obrazky/background_game.png");
     tex_bgGameOver.loadFromFile("Obrazky/background_gameover.png");
+
+    // Načtení tvých vlastních tlačítek ze složky Obrazky
+    tex_btnPlay.loadFromFile("Obrazky/button_play.png");
+    tex_btnExit.loadFromFile("Obrazky/button_exit.png");
+
+
     sprite_bg.setTexture(tex_bgMenu);
+
 }
 
 void Game :: pocet_pokusu_podle_chyb(){
@@ -143,17 +151,13 @@ void Game :: play(){
     
 }
 
-void Game::zpracovat_udalosti()
-{
-    while (const std::optional<sf::Event> event = okno.pollEvent())
-    {
-        if (event->is<sf::Event::Closed>())
-        {
+void Game::zpracovat_udalosti(){
+    while (const std::optional<sf::Event> event = okno.pollEvent()){
+        if (event->is<sf::Event::Closed>()){
             okno.close();
         }
 
-        if (const auto* mouseEvent = event->getIf<sf::Event::MouseButtonPressed>())
-        {
+        if (const auto* mouseEvent = event->getIf<sf::Event::MouseButtonPressed>()){
             if (stav == Stav_Hra::Hlavni_menu &&
                 mouseEvent->button == sf::Mouse::Button::Left)
             {
@@ -293,56 +297,54 @@ void Game :: zpracovat_tisk_emteru(){
     }
 }
 
-void Game :: vykreslit (){
+void Game::vykreslit() {
     okno.clear();
-    okno.draw(sprite_bg);
 
-    sf::Text text_title(font);
-    text_title.setCharacterSize(45);
-    text_title.setFillColor(sf::Color::Yellow);
+    const sf::Texture* hrac_texture = &tex_bgGame; 
+    if (stav == Stav_Hra::Hlavni_menu) {
+        hrac_texture = &tex_bgMenu;
+    } else if (stav == Stav_Hra::GameOver) {
+        hrac_texture = &tex_bgGameOver;
+    }
 
-    sf::Text text_sub(font);
-    text_sub.setCharacterSize(30);
-    text_sub.setFillColor(sf::Color::White);
+    sf::Sprite sprite_bg(*hrac_texture);
+    okno.draw(sprite_bg); 
+
+    // sf::Text text_title(font);
+    // text_title.setCharacterSize(45);
+    // text_title.setFillColor(sf::Color::Yellow);
+
+    // sf::Text text_sub(font);
+    // text_sub.setCharacterSize(30);
+    // text_sub.setFillColor(sf::Color::White);
 
     if (stav == Stav_Hra::Hlavni_menu) {
-        text_title.setString("THE ETHERIUM LABORATORY");
-        text_title.setPosition({480.f, 200.f});
-        okno.draw(text_title);
 
-        sf::RectangleShape btnPlay(sf::Vector2f(300.f, 80.f));
-        btnPlay.setFillColor(sf::Color(50, 150, 50));
+        // Vykreslení tvého grafického tlačítka PLAY ze souboru button_play.png
+        sf::Sprite btnPlay(tex_btnPlay);
         btnPlay.setPosition({650.f, 400.f});
         okno.draw(btnPlay);
 
-        text_sub.setString("PLAY GAME");
-        text_sub.setPosition({720.f, 420.f});
-        okno.draw(text_sub);
-
-        sf::RectangleShape btnExit(sf::Vector2f(300.f, 80.f));
-        btnExit.setFillColor(sf::Color(150, 50, 50));
+        // Vykreslení tvého grafického tlačítka EXIT ze souboru button_exit.png
+        sf::Sprite btnExit(tex_btnExit);
         btnExit.setPosition({650.f, 550.f});
         okno.draw(btnExit);
-
-        text_sub.setString("EXIT GAME");
-        text_sub.setPosition({725.f, 570.f});
-        okno.draw(text_sub);
     }
-    else if (stav == Stav_Hra::InputName) {
-        text_title.setString("ZADANI CHARAKTERU");
-        text_title.setPosition({580.f, 200.f});
-        okno.draw(text_title);
+    // else if (stav == Stav_Hra::InputName) {
+    //     text_title.setString("ZADANI CHARAKTERU");
+    //     text_title.setPosition({580.f, 200.f});
+    //     okno.draw(text_title);
 
-        text_sub.setString("Zadej jmeno sveho charakteru:\n\n > " + player_input);
-        text_sub.setPosition({450.f, 400.f});
-        okno.draw(text_sub);
+    //     text_sub.setString("Zadej jmeno sveho charakteru:\n\n > " + player_input);
+    //     text_sub.setPosition({450.f, 400.f});
+    //     okno.draw(text_sub);
 
-        text_sub.setString("Stiskni [ENTER] pro potvrzeni.");
-        text_sub.setFillColor(sf::Color(150, 150, 150));
-        text_sub.setPosition({580.f, 650.f});
-        okno.draw(text_sub);
-    }
-    else if (stav == Stav_Hra::Ukazat_rules) {
+    //     text_sub.setString("Stiskni [ENTER] pro potvrzeni.");
+    //     text_sub.setFillColor(sf::Color(150, 150, 150));
+    //     text_sub.setPosition({580.f, 650.f});
+    //     okno.draw(text_sub);
+    // }
+    else if (stav== Stav_Hra::Ukazat_rules) {
         sf::Texture tex_rules;
         if (tex_rules.loadFromFile("Obrazky/rules.png")) {
             sf::Sprite sp_rules(tex_rules);
@@ -354,19 +356,23 @@ void Game :: vykreslit (){
         text_sub.setPosition({630.f, 850.f});
         okno.draw(text_sub);
     }
-    else if (stav == Stav_Hra::Ukazat_lvl) {
+    else if (trang_thai == GameState::ShowLevelGuide) {
         sf::Texture tex_lvl;
         if (tex_lvl.loadFromFile(seznam[current_level_idx].getLink_P())) {
             sf::Sprite sp_lvl(tex_lvl);
             sp_lvl.setPosition({250.f, 100.f});
             okno.draw(sp_lvl);
         }
-        text_sub.setString("Prostuduj navod a stiskni ENTER pro zobrazeni otazky...");
+        // Výpočet zbývajících sekund pro text na obrazovce
+        int zbyva_sekund = 15 - static_cast<int>(timer.getElapsedTime().asSeconds());
+        if (zbyva_sekund < 0) zbyva_sekund = 0;
+
+        text_sub.setString("Navod zmizi za: " + std::to_string(zbyva_sekund) + "s... (Nebo stiskni ENTER)");
         text_sub.setFillColor(sf::Color::Green);
-        text_sub.setPosition({450.f, 880.f});
+        text_sub.setPosition({550.f, 880.f});
         okno.draw(text_sub);
     }
-    else if (stav == Stav_Hra::AskQuestion) {
+    else if (trang_thai == GameState::AskQuestion) {
         text_title.setString(seznam[current_level_idx].getJmenoLevel());
         text_title.setPosition({200.f, 80.f});
         okno.draw(text_title);
@@ -395,7 +401,7 @@ void Game :: vykreslit (){
         text_sub.setPosition({200.f, 550.f});
         okno.draw(text_sub);
     }
-    else if (stav == Stav_Hra::WrongAnswer) {
+    else if (trang_thai == GameState::WrongAnswer) {
         text_title.setString("CHYBA! TVE RESENI BYLO NESPAVNE!");
         text_title.setFillColor(sf::Color::Red);
         text_title.setPosition({350.f, 300.f});
@@ -405,18 +411,19 @@ void Game :: vykreslit (){
         text_sub.setPosition({420.f, 450.f});
         okno.draw(text_sub);
     }
-    else if (stav == Stav_Hra::hadat_heslo) {
+    else if (trang_thai == GameState::FinalGuess) {
         text_title.setString("DEKODOVANI FINALNIHO ZAMKU KUFRU");
         text_title.setPosition({350.f, 100.f});
         okno.draw(text_title);
 
-        std::string info_errors = "Celkovy pocet chyb v laborkach: " + std::to_string(pocet_chyb) + "\n";
-        info_errors += "Mate k dispozici celkem " + std::to_string(zbylo_pokusu) + " pokusu na toto cislo.";
+        std::string info_errors = "Celkovy pocet chyb v laborkach: " + std::to_string(total_errors) + "\n";
+        info_errors += "Zbyvajici pokusy pro aktualni cislo: " + std::to_string(final_guess_attempts);
         text_sub.setString(info_errors);
         text_sub.setPosition({400.f, 220.f});
         okno.draw(text_sub);
 
-        std::string secret_progress = "Zadejte " + std::to_string(index_hadani + 1) + ". tajne cislo (0-9):\n\n > " + player_input;
+        // Zobrazení aktuální pozice hádání (Index 1. až 5. čísla)
+        std::string secret_progress = "Zadejte " + std::to_string(final_guess_stage + 1) + ". tajne cislo (0-9):\n\n > " + player_input;
         sf::Text text_g(font);
         text_g.setString(secret_progress);
         text_g.setCharacterSize(35);
@@ -424,7 +431,7 @@ void Game :: vykreslit (){
         text_g.setPosition({400.f, 450.f});
         okno.draw(text_g);
     }
-    else if (stav == Stav_Hra::OpenChest) {
+    else if (trang_thai == GameState::OpenChest) {
         text_title.setString("GRATULUJEME! ODEMKL JSI TRUHLU S POKLADEM!");
         text_title.setFillColor(sf::Color::Green);
         text_title.setPosition({250.f, 300.f});
@@ -437,7 +444,7 @@ void Game :: vykreslit (){
             okno.draw(sp_chest);
         }
     }
-    else if (stav == Stav_Hra::GameOver) {
+    else if (trang_thai == GameState::GameOver) {
         text_title.setString("GAME OVER - OPUSTIL JSI LABORKU");
         text_title.setFillColor(sf::Color::Red);
         text_title.setPosition({400.f, 400.f});
@@ -446,7 +453,5 @@ void Game :: vykreslit (){
 
     okno.display();
 }
-
-
 
 

@@ -82,6 +82,8 @@ private:
     sf::Texture tex_bgGame;
     sf::Texture tex_bgGameOver;
     sf::Sprite sprite_bg;
+    sf::Texture tex_btnPlay;
+    sf::Texture tex_btnExit;
 
     // Biến quản lý logic trò chơi
     Stav_Hra stav;
@@ -98,6 +100,7 @@ private:
     int index_hadani;    // Đang đoán đến chữ số thứ mấy (0 -> 4)
     int zbylo_pokusu; // Số lượt đoán còn lại cho chữ số hiện tại
 
+    sf::Clock timer;
     // Khởi tạo hệ thống dữ liệu nội bộ
     void tvorit_heslo();
     void tvorit_level();
