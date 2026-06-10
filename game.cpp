@@ -3,9 +3,12 @@
 
 sf::Music Game::bg_song;
 
+
 Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Edition"), sprite_bg(tex_bgMenu)
 {
     system("chcp 65001");
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
     okno.setFramerateLimit(60);
     srand(static_cast<unsigned int>(time(0)));
 
@@ -73,12 +76,12 @@ void Game::tvorit_level(){
     Otazka o1_1;
     o1_1.poradi =1;
     o1_1.typy = 0;
-    o1_1.question  = {"Zadejte nazev H₂O₂: "};
+    o1_1.question  = {"Zadejte nazev H2O2"};
     o1_1. spravny_text = {"peroxid vodiku", "peroxid vodíku", "peroxidvodiku"};
     Otazka o1_2;
     o1_2.poradi =2;
     o1_2.typy = 1;
-    o1_2.question  = {"Kolik gramů droždí (katalyzátoru) použiješ(gram)?: "};
+    o1_2.question  = {"Kolik gramu drozdi (katalyzatoru) pouzijes(gram)?"};
     o1_2.spravny_cislo = 15;
 
     lvl1.seznam.push_back(o1_1);
@@ -93,12 +96,12 @@ void Game::tvorit_level(){
     Otazka o2_1;
     o2_1.poradi =1;
     o2_1.typy = 1;
-    o2_1.question  = {"kolik ml chloranu sodného: "};
+    o2_1.question  = {"kolik ml chloranu sodného"};
     o2_1. spravny_cislo =  2;
     Otazka o2_2;
     o2_2.poradi =2;
     o2_2.typy = 0;
-    o2_2.question  = {"0,8 g čeho máme smíchat s 0,1 g luminolu: "};
+    o2_2.question  = {"0,8 g čeho máme smíchat s 0,1 g luminolu"};
     o2_2.spravny_text = {"hydroxid sodny", "hydroxid sodný", "hydroxidsodny"};
 
     lvl2.seznam.push_back(o2_1);
@@ -113,12 +116,12 @@ void Game::tvorit_level(){
     Otazka o3_1;
     o3_1.poradi =1;
     o3_1.typy = 0;
-    o3_1.question  = {"Jaký plyn se v experimentu používá kromě NO nebo N₂O(napiš název plynu): "};
+    o3_1.question  = {"Jaký plyn se v experimentu používá kromě NO nebo N₂O(napiš název plynu)"};
     o3_1. spravny_text = {"sirouhlik","sirouhlík"};
     Otazka o3_2;
     o3_2.poradi =2;
     o3_2.typy = 1;
-    o3_2.question  = {"Kolik sirouhlíku se přidává na 1 litr plynu(v ml): "};
+    o3_2.question  = {"Kolik sirouhlíku se přidává na 1 litr plynu(v ml)"};
     o3_2.spravny_cislo = 2;
 
     lvl3.seznam.push_back(o3_1);
@@ -134,12 +137,12 @@ void Game::tvorit_level(){
     Otazka o4_1;
     o4_1.poradi =1;
     o4_1.typy = 0;
-    o4_1.question  = {"Jak se jinak říká hliníku: "};
+    o4_1.question  = {"Jak se jinak říká hliníku"};
     o4_1. spravny_text = {"aluminium"};
     Otazka o4_2;
     o4_2.poradi =2;
     o4_2.typy = 0;
-    o4_2.question  = {"V jakém minerálu se oxid železitý (Fe₂O₃) vyskytuje nejčastěji: "};
+    o4_2.question  = {"V jakém minerálu se oxid železitý (Fe₂O₃) vyskytuje nejčastěji"};
     o4_2. spravny_text = {"hematit"};
 
     lvl4.seznam.push_back(o4_1);
@@ -154,12 +157,12 @@ void Game::tvorit_level(){
     Otazka o5_1;
     o5_1.poradi =1;
     o5_1.typy = 0;
-    o5_1.question  = {"Jak se nazývá látka vznikající reakcí vodíku a kyslíku?: "};
+    o5_1.question  = {"Jak se nazývá látka vznikající reakcí vodíku a kyslíku?"};
     o5_1. spravny_text = {"voda"};
     Otazka o5_2;
     o5_2.poradi =2;
     o5_2.typy = 0;
-    o5_2.question  = {"Jak se obecně označuje prudká reakce doprovázená uvolněním velkého množství energie?: "};
+    o5_2.question  = {"Jak se obecně označuje prudká reakce doprovázená uvolněním velkého množství energie?"};
     o5_2. spravny_text = {"ezploxe","výbuch","exotermní","vybuch","exotermni"};
 
     lvl5.seznam.push_back(o5_1);
@@ -215,7 +218,7 @@ void Game::load_assets(){
     {
         sf::Texture f;
         if (f.loadFromFile("Obrazky/frame/frame_" + std::to_string(i) + ".png"))
-        {
+        {   
             gif_frames.push_back(f);
         }
     }
@@ -492,6 +495,7 @@ void Game::draw_animated_gif_text(float x, float y)
         }
         sf::Sprite gif_sprite(gif_frames[current_gif_frame]);
         gif_sprite.setPosition({x, y});
+        gif_sprite.setScale({0.5f,0.5f});
         okno.draw(gif_sprite);
     }
 }
@@ -505,7 +509,7 @@ void Game::vykreslit()
     if (stav == Stav_Hra::Hlavni_menu)
         bg.setTexture(tex_bgMenu);
     else if (stav == Stav_Hra::WrongAnswer)
-        bg.setTexture(tex_chyba);
+        bg.setTexture(tex_gameBg);
     else if (stav == Stav_Hra::GameOver)
         bg.setTexture(tex_gameOverBg);
     else
@@ -524,22 +528,22 @@ void Game::vykreslit()
     }
     else if (stav == Stav_Hra::Ukazat_rules){
         sf::Sprite sp(tex_rules);
-        sp.setScale({1.5f,1.5f});
-        sp.setPosition({300.f, 150.f}); // Căn chính giữa nền
+        sp.setScale({0.8f,0.8f});
+        sp.setPosition({400.f, 150.f}); // Căn chính giữa nền
         okno.draw(sp);
-        draw_animated_gif_text(550.f, 800.f);
+        draw_animated_gif_text(650.f, 850.f);
     
     }
     else if (stav == Stav_Hra::InputName)
     {
         sf::Sprite sp(tex_zadaiCharakteru);
-        sp.setPosition({600.f, 200.f});
+        sp.setPosition({500.f, 200.f});
         okno.draw(sp);
 
         txt.setString(player_input);
-        txt.setPosition({520.f, 440.f}); // Vị trí đè khớp lên khung nhập liệu ô trống của PNG
+        txt.setPosition({650.f, 438.f}); // Vị trí đè khớp lên khung nhập liệu ô trống của PNG
         okno.draw(txt);
-        draw_animated_gif_text(550.f, 800.f);
+        draw_animated_gif_text(650.f, 850.f);
     }
     else if (stav == Stav_Hra::Ukazat_lvl)
     {
@@ -547,7 +551,8 @@ void Game::vykreslit()
         if (lvl_tex.loadFromFile(seznam[current_level_idx].link_p))
         {
             sf::Sprite sp(lvl_tex);
-            sp.setPosition({250.f, 100.f}); // Vừa khít tâm nền màn hình vẽ
+            sp.setScale({0.8f,0.8f});
+            sp.setPosition({200.f, 80.0f}); // Vừa khít tâm nền màn hình vẽ
             okno.draw(sp);
         }
         int sec = 15 - static_cast<int>(timer.getElapsedTime().asSeconds());
@@ -557,30 +562,29 @@ void Game::vykreslit()
     }
     else if (stav == Stav_Hra::AskQuestion)
     {
-        txt.setString(seznam[current_level_idx].jmeno_level);
-        txt.setPosition({200.f, 100.f});
-        okno.draw(txt);
-
         txt.setString(seznam[current_level_idx].seznam[current_question_idx].question);
-        txt.setPosition({200.f, 250.f});
+        txt.setPosition({650.f, 550.f});
         okno.draw(txt);
 
         sf::Sprite box(tex_zadejOdpoved);
-        box.setPosition({200.f, 400.f});
+        box.setPosition({450.f, 200.f});
         okno.draw(box);
 
         sf::Text input_disp(font);
         input_disp.setString(player_input);
         input_disp.setCharacterSize(26);
         input_disp.setFillColor(sf::Color::Yellow);
-        input_disp.setPosition({240.f, 435.f}); // Căn lề lọt thỏm trong ảnh zadej_question.png
+        input_disp.setPosition({650.f, 438.f}); // Căn lề lọt thỏm trong ảnh zadej_question.png
         okno.draw(input_disp);
     }
     else if (stav == Stav_Hra::WrongAnswer)
     {
+        sf::Sprite sb(tex_chyba);
+        sb.setPosition({480.f,200.f});
+        okno.draw(sb);
         txt.setString(player_input);
         txt.setFillColor(sf::Color::White);
-        txt.setPosition({650.f, 600.f});
+        txt.setPosition({650.f, 470.f});
         okno.draw(txt);
     }
     else if (stav == Stav_Hra::hadat_heslo)
