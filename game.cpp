@@ -3,7 +3,6 @@
 
 sf::Music Game::bg_song;
 
-
 Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Edition"), sprite_bg(tex_bgMenu)
 {
     system("chcp 65001");
@@ -37,7 +36,7 @@ Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Editio
             return;
         }
         bg_song.setLooping(true); // Lặp lại vô hạn
-        bg_song.setVolume(40.f);  // Âm lượng 40%
+        bg_song.setVolume(20.f);  // Âm lượng 40%
         bg_song.play();           // Phát nhạc
     }
 }
@@ -45,125 +44,121 @@ Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Editio
 void Game::tvorit_heslo(){
     heslo.clear();
 
-    while (heslo.size() < 5)
-    {
+    while (heslo.size() < 5){
         int x = rand() % 10;
 
         bool existuje = false;
-        for (int cislo : heslo)
-        {
-            if (cislo == x)
-            {
+        for (int cislo : heslo){
+            if (cislo == x){
                 existuje = true;
                 break;
             }
         }
 
-        if (!existuje)
-        {
+        if (!existuje){
             heslo.push_back(x);
         }
     }
 }
 
 void Game::tvorit_level(){
-    //level1
+    // level1
     Level lvl1;
     lvl1.jmeno_level = "Level 1 - Foam Apocalypse";
     lvl1.link_p = "Obrazky/level/lvl1.png";
     lvl1.link_v = "video_reakce\\elephant.mp4";
 
     Otazka o1_1;
-    o1_1.poradi =1;
+    o1_1.poradi = 1;
     o1_1.typy = 0;
-    o1_1.question  = {"Zadejte nazev H2O2"};
-    o1_1. spravny_text = {"peroxid vodiku", "peroxid vodíku", "peroxidvodiku"};
+    o1_1.question = {"Zadejte nazev H2O2"};
+    o1_1.spravny_text = {"peroxid vodiku", "peroxid vodíku", "peroxidvodiku"};
     Otazka o1_2;
-    o1_2.poradi =2;
+    o1_2.poradi = 2;
     o1_2.typy = 1;
-    o1_2.question  = {"Kolik gramu drozdi (katalyzatoru) pouzijes(gram)?"};
+    o1_2.question = {"Kolik gramu drozdi (katalyzatoru) pouzijes(gram)?"};
     o1_2.spravny_cislo = 15;
 
     lvl1.seznam.push_back(o1_1);
     lvl1.seznam.push_back(o1_2);
     seznam.push_back(lvl1);
-    //level2
+    // level2
     Level lvl2;
     lvl2.jmeno_level = "Level 2 - Midnight Neon";
     lvl2.link_p = "Obrazky/level/lvl2.png";
     lvl2.link_v = "video_reakce\\luminol.mp4";
 
     Otazka o2_1;
-    o2_1.poradi =1;
+    o2_1.poradi = 1;
     o2_1.typy = 1;
-    o2_1.question  = {"kolik ml chloranu sodného"};
-    o2_1. spravny_cislo =  2;
+    o2_1.question = {"kolik ml chloranu sodneho"};
+    o2_1.spravny_cislo = 2;
     Otazka o2_2;
-    o2_2.poradi =2;
+    o2_2.poradi = 2;
     o2_2.typy = 0;
-    o2_2.question  = {"0,8 g čeho máme smíchat s 0,1 g luminolu"};
+    o2_2.question = {"0,8 g ceho mame smichat s 0,1 g luminolu"};
     o2_2.spravny_text = {"hydroxid sodny", "hydroxid sodný", "hydroxidsodny"};
 
     lvl2.seznam.push_back(o2_1);
     lvl2.seznam.push_back(o2_2);
     seznam.push_back(lvl2);
-    //level3
+    // level3
     Level lvl3;
     lvl3.jmeno_level = "Level 3 - Howl of the Hellhound";
     lvl3.link_p = "Obrazky/level/lvl3.png";
     lvl3.link_v = "video_reakce\\barking_dog.mp4";
 
     Otazka o3_1;
-    o3_1.poradi =1;
+    o3_1.poradi = 1;
     o3_1.typy = 0;
-    o3_1.question  = {"Jaký plyn se v experimentu používá kromě NO nebo N₂O(napiš název plynu)"};
-    o3_1. spravny_text = {"sirouhlik","sirouhlík"};
+    o3_1.question = {"Jaky plyn se v experimentu pouziva krome NO nebo N2O(napis nazev plynu)"};
+    o3_1.spravny_text = {"sirouhlik", "sirouhlík"};
     Otazka o3_2;
-    o3_2.poradi =2;
+    o3_2.poradi = 2;
     o3_2.typy = 1;
-    o3_2.question  = {"Kolik sirouhlíku se přidává na 1 litr plynu(v ml)"};
+    o3_2.question = {"Kolik sirouhliku se pridava na 1 litr plynu(v ml)"};
     o3_2.spravny_cislo = 2;
 
     lvl3.seznam.push_back(o3_1);
     lvl3.seznam.push_back(o3_2);
     seznam.push_back(lvl3);
 
-    //level4
+    // level4
     Level lvl4;
     lvl4.jmeno_level = "Level 4 - Iron Rain";
     lvl4.link_p = "Obrazky/level/lvl4.png";
     lvl4.link_v = "video_reakce\\thermit.mp4";
 
     Otazka o4_1;
-    o4_1.poradi =1;
+    o4_1.poradi = 1;
     o4_1.typy = 0;
-    o4_1.question  = {"Jak se jinak říká hliníku"};
-    o4_1. spravny_text = {"aluminium"};
+    o4_1.question = {"Jak se jinak rika hliniku"};
+    o4_1.spravny_text = {"aluminium"};
     Otazka o4_2;
-    o4_2.poradi =2;
+    o4_2.poradi = 2;
     o4_2.typy = 0;
-    o4_2.question  = {"V jakém minerálu se oxid železitý (Fe₂O₃) vyskytuje nejčastěji"};
-    o4_2. spravny_text = {"hematit"};
+    o4_2.question = {"V jakem mineralu se oxid zelezity (Fe2O3) vyskytuje nejcasteji"};
+    o4_2.spravny_text = {"hematit"};
 
     lvl4.seznam.push_back(o4_1);
     lvl4.seznam.push_back(o4_2);
     seznam.push_back(lvl4);
-    //level5
+    // level5
     Level lvl5;
     lvl5.jmeno_level = "Level 5 - Abyssal Detonation";
     lvl5.link_p = "Obrazky/level/lvl5.png";
     lvl5.link_v = "video_reakce\\bubble.mp4";
 
     Otazka o5_1;
-    o5_1.poradi =1;
+    o5_1.poradi = 1;
     o5_1.typy = 0;
-    o5_1.question  = {"Jak se nazývá látka vznikající reakcí vodíku a kyslíku?"};
-    o5_1. spravny_text = {"voda"};
+    o5_1.question = {"Jak se nazyva latka vznikajici reakci vodiku a kysliku?"};
+    o5_1.spravny_text = {"voda"};
     Otazka o5_2;
-    o5_2.poradi =2;
+    o5_2.poradi = 2;
     o5_2.typy = 0;
-    o5_2.question  = {"Jak se obecně označuje prudká reakce doprovázená uvolněním velkého množství energie?"};
-    o5_2. spravny_text = {"ezploxe","výbuch","exotermní","vybuch","exotermni"};
+    o5_2.question = {"Jak se obecne oznacuje prudka reakce doprovazena uvolnenim velkeho mnozstvi energie?"};
+    o5_2.spravny_text = {"exploze", "výbuch", "exotermní", "vybuch", "exotermni"};
 
     lvl5.seznam.push_back(o5_1);
     lvl5.seznam.push_back(o5_2);
@@ -171,54 +166,25 @@ void Game::tvorit_level(){
 }
 
 void Game::load_assets(){
-    if (!tex_bgMenu.loadFromFile("Obrazky/background.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_gameBg.loadFromFile("Obrazky/Game_bg.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_rules.loadFromFile("Obrazky/rules.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_zadaiCharakteru.loadFromFile("Obrazky/Nadpis/zadai_charakteru.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_zadejOdpoved.loadFromFile("Obrazky/Nadpis/zadej_answer.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_chyba.loadFromFile("Obrazky/Nadpis/chyba.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_gameOverBg.loadFromFile("Obrazky/GameOver_bg.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_zadejteHeslo.loadFromFile("Obrazky/Nadpis/zadejte_heslo.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_tvojePokladJe.loadFromFile("Obrazky/Nadpis/tvoje_poklad_je.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-    if (!tex_btnPlay.loadFromFile("Obrazky/Button/button_play.png"))
-    {
-        std::cerr << "khong mo duoc" << std::endl;
-    }
-
+    if (!tex_bgMenu.loadFromFile("Obrazky/background.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_gameBg.loadFromFile("Obrazky/Game_bg.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_rules.loadFromFile("Obrazky/rules.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_zadaiCharakteru.loadFromFile("Obrazky/Nadpis/zadai_charakteru.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_zadejOdpoved.loadFromFile("Obrazky/Nadpis/zadej_answer.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_chyba.loadFromFile("Obrazky/Nadpis/chyba.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_gameOverBg.loadFromFile("Obrazky/GameOver_bg.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_zadejteHeslo.loadFromFile("Obrazky/Nadpis/zadejte_heslo.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_tvojePokladJe.loadFromFile("Obrazky/Nadpis/tvoje_poklad_je.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_btnPlay.loadFromFile("Obrazky/Button/button_play.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if (!tex_vynoril_cislo.loadFromFile("Obrazky/Nadpis/vynoril_cislo.png")){std::cerr << "khong mo duoc" << std::endl;}
+    if(!tex_box.loadFromFile("Obrazky/Nadpis/okinko_pro_heslo.png")){std::cerr << "khong mo duoc" << std::endl;}
     // Tự động tải chuỗi ảnh Gif phân rã từ thư mục frame/
-    
+
     for (int i = 0; i <= 4; i++)
     {
         sf::Texture f;
         if (f.loadFromFile("Obrazky/frame/frame_" + std::to_string(i) + ".png"))
-        {   
+        {
             gif_frames.push_back(f);
         }
     }
@@ -252,7 +218,7 @@ bool Game::kontrolovatOdpoved(const std::string &answer, const std::vector<std::
 }
 
 // Chống hack/gian lận: Tìm chữ số hợp lệ đầu tiên xuất hiện trong chuỗi người chơi nhập
-std::string Game::filter_first_number_string(const std::string &input)
+std::string Game::hledat_prvni_cislo(const std::string &input)
 {
     std::string result = "";
     for (char c : input)
@@ -267,7 +233,8 @@ std::string Game::filter_first_number_string(const std::string &input)
     return result;
 }
 
-void Game::play(){
+void Game::play()
+{
     while (okno.isOpen())
     {
         zpracovat_udalosti();
@@ -292,32 +259,42 @@ void Game::play(){
     }
 }
 
-void Game::zpracovat_udalosti(){
-    while (const std::optional<sf::Event> event = okno.pollEvent()){
-        if (event->is<sf::Event::Closed>()){
+void Game::zpracovat_udalosti()
+{
+    while (const std::optional<sf::Event> event = okno.pollEvent())
+    {
+        if (event->is<sf::Event::Closed>())
+        {
             okno.close();
         }
-        if (const auto *mouseEvent = event->getIf<sf::Event::MouseButtonPressed>()){
+        if (const auto *mouseEvent = event->getIf<sf::Event::MouseButtonPressed>())
+        {
             if (stav == Stav_Hra::Hlavni_menu &&
-                mouseEvent->button == sf::Mouse::Button::Left){
+                mouseEvent->button == sf::Mouse::Button::Left)
+            {
                 sf::Vector2f mousePos(static_cast<float>(mouseEvent->position.x), static_cast<float>(mouseEvent->position.y));
-                if (mousePos.x >= 680.f && mousePos.x <= 950.f && mousePos.y >= 850.f && mousePos.y <= 930.f){
+                if (mousePos.x >= 680.f && mousePos.x <= 950.f && mousePos.y >= 850.f && mousePos.y <= 930.f)
+                {
                     stav = Stav_Hra::Ukazat_rules;
                     sprite_bg.setTexture(tex_gameBg);
                 }
-                if (mousePos.x >= 650.f && mousePos.x <= 950.f && mousePos.y >= 550.f && mousePos.y <= 630.f){
+                if (mousePos.x >= 650.f && mousePos.x <= 950.f && mousePos.y >= 550.f && mousePos.y <= 630.f)
+                {
                     okno.close();
                 }
             }
         }
 
-        if (const auto *textEvent = event->getIf<sf::Event::TextEntered>()){
+        if (const auto *textEvent = event->getIf<sf::Event::TextEntered>())
+        {
             zpracovat_textovy_vstup(textEvent->unicode);
         }
 
-        if (const auto *keyEvent = event->getIf<sf::Event::KeyPressed>()){
+        if (const auto *keyEvent = event->getIf<sf::Event::KeyPressed>())
+        {
 
-            if (keyEvent->code == sf::Keyboard::Key::Enter){
+            if (keyEvent->code == sf::Keyboard::Key::Enter)
+            {
                 zpracovat_stisk_enteru();
             }
         }
@@ -340,29 +317,22 @@ void Game::zpracovat_textovy_vstup(char znak)
         }
     }
 }
-
-void Game::zpracovat_stisk_enteru()
-{
-    if (stav == Stav_Hra::Ukazat_rules)
-    {
-        if (timer.getElapsedTime().asSeconds() >= 2.f)
-        {
+void Game::zpracovat_stisk_enteru(){
+    if (stav == Stav_Hra::Ukazat_rules){
+        if (timer.getElapsedTime().asSeconds() >= 2.f){
             stav = Stav_Hra::InputName;
             player_input = "";
         }
     }
-    else if (stav == Stav_Hra::InputName)
-    {
-        if (!player_input.empty())
-        {
+    else if (stav == Stav_Hra::InputName){
+        if (!player_input.empty()){
             Hrac.name = player_input;
             stav = Stav_Hra::Ukazat_lvl;
             timer.restart();
             player_input = "";
         }
     }
-    else if (stav == Stav_Hra::Ukazat_lvl)
-    {
+    else if (stav == Stav_Hra::Ukazat_lvl){
         stav = Stav_Hra::AskQuestion;
         player_input = "";
     }
@@ -374,116 +344,119 @@ void Game::zpracovat_stisk_enteru()
 
         if (q.typy == 0)
             dung = kontrolovatOdpoved(player_input, q.spravny_text);
-        else
-        {
-            try
-            {
+        else{
+            try{
                 dung = (std::stoi(player_input) == q.spravny_cislo);
             }
-            catch (...)
-            {
+            catch (...){
                 dung = false;
             }
         }
 
-        if (dung)
-        {
+        // --- Xử lý khi trả lời ĐÚNG ---
+        if (dung){
             current_question_idx++;
             player_input = "";
-            if (current_question_idx >= lvl.seznam.size())
-            {
-                // Gọi video phản ứng tương ứng trên hệ thống
-                system(("start " + lvl.link_v).c_str());
 
-                // Hiển thị số mật mã tương ứng thu thập được
-                std::cout << "Kycislo urovne " << current_level_idx + 1 << " je: " << heslo[current_level_idx] << std::endl;
+            // Nếu đã trả lời đúng tất cả các câu hỏi của level hiện tại
+            if (current_question_idx >= lvl.seznam.size()){
+                system(("start /wait " + lvl.link_v).c_str());
 
-                current_level_idx++;
-                current_question_idx = 0;
-                if (current_level_idx >= 5)
-                {
-                    stav = Stav_Hra::hadat_heslo;
-                    pocet_pokusu_podle_chyb();
+                // Kiểm tra xem level này có hoàn hảo không (không sai câu nào)
+                if (level_bezchyb){
+                    stav = Stav_Hra::Ukazat_mk_inx;
                 }
-                else
-                {
-                    stav = Stav_Hra::Ukazat_lvl;
-                    timer.restart();
+                else{
+                    // Nếu đã từng sai câu nào đó trong level này -> Phạt, bỏ qua màn hiện mã, nhảy thẳng sang level tiếp theo
+                    current_level_idx++;
+                    level_bezchyb = true; // Reset lại cho level sau
+
+                    if (current_level_idx < 5){
+                        stav = Stav_Hra::Ukazat_lvl;
+                        timer.restart();
+                        current_question_idx = 0;
+                    }
+                    else{
+                        stav = Stav_Hra::hadat_heslo;
+                        pocet_pokusu_podle_chyb();
+                    }
                 }
             }
         }
-        else
-        {
+        // --- Xử lý khi trả lời SAI ---
+        else{
             pocet_chyb++;
+            level_bezchyb = false;
             stav = Stav_Hra::WrongAnswer;
             player_input = "";
         }
     }
-    else if (stav == Stav_Hra::WrongAnswer)
-    {
-        std::string s = naMale(player_input);
-        if (s == "ano")
-        {
+    // 🌟 ĐƯA CÁC NHÁNH DƯỚI ĐÂY THÀNH CÁC NHÁNH ĐỘC LẬP (Không lồng vào AskQuestion)
+    else if (stav == Stav_Hra::Ukazat_mk_inx){
+        current_level_idx++;
+        level_bezchyb = true; // Reset lại trạng thái cho level mới
+
+        if (current_level_idx < 5){
             stav = Stav_Hra::Ukazat_lvl;
             timer.restart();
             current_question_idx = 0;
         }
-        else if (s == "ne")
-        {
+        else{
+            stav = Stav_Hra::hadat_heslo;
+            pocet_pokusu_podle_chyb();
+        }
+        player_input = "";
+    }
+    else if (stav == Stav_Hra::WrongAnswer){
+        std::string choice = naMale(player_input);
+        if (choice == "ano"){
+            current_question_idx = 0;
+            stav = Stav_Hra::Ukazat_lvl;
+            timer.restart();
+        }
+        else if (choice == "ne"){
             stav = Stav_Hra::GameOver;
         }
         player_input = "";
     }
-    else if (stav == Stav_Hra::hadat_heslo)
-    {
-        std::string filtered = filter_first_number_string(player_input);
-        if (filtered.length() < 5)
-        {
+    else if (stav == Stav_Hra::hadat_heslo){
+        std::string filtered = hledat_prvni_cislo(player_input);
+        if (filtered.length() < 5){
             player_input = "";
             return;
         }
 
-        // Kiểm tra logic chuỗi mật mã tổ hợp
-        bool khop_hoan_toan = true;
+        bool match_all = true;
         feedback_lines.clear();
 
-        for (size_t i = 0; i < 5; i++)
-        {
-            int digit_nhap = filtered[i] - '0';
-            if (digit_nhap == heslo[i])
-            {
-                feedback_lines.push_back("Cislo " + std::to_string(digit_nhap) + " je SPRAVNE a na SPRAVNEM miste.");
+        for (size_t i = 0; i < 5; i++){
+            int digit_input = filtered[i] - '0';
+            if (digit_input == heslo[i]){
+                feedback_lines.push_back("Cislo " + std::to_string(digit_input) + " je SPRAVNE a na SPRAVNEM miste.");
             }
-            else
-            {
-                khop_hoan_toan = false;
-                if (std::find(heslo.begin(), heslo.end(), digit_nhap) != heslo.end())
-                {
-                    feedback_lines.push_back("Cislo " + std::to_string(digit_nhap) + " je spravne, ale na ŠPATNÉM miste.");
+            else{
+                match_all = false;
+                if (std::find(heslo.begin(), heslo.end(), digit_input) != heslo.end()){
+                    feedback_lines.push_back("Cislo " + std::to_string(digit_input) + " je spravne, ale na SPATNEM miste.");
                 }
-                else
-                {
-                    feedback_lines.push_back("Cislo " + std::to_string(digit_nhap) + " v hesle VUBEC NEEXISTUJE.");
+                else{
+                    feedback_lines.push_back("Cislo " + std::to_string(digit_input) + " v hesle VUBEC NEEXISTUJE.");
                 }
             }
         }
 
-        if (khop_hoan_toan)
-        {
+        if (match_all){
             stav = Stav_Hra::OpenChest;
         }
-        else
-        {
+        else{
             zbylo_pokusu--;
-            if (zbylo_pokusu <= 0)
-            {
+            if (zbylo_pokusu <= 0){
                 stav = Stav_Hra::GameOver;
             }
         }
         player_input = "";
     }
 }
-
 void Game::draw_animated_gif_text(float x, float y)
 {
     if (!gif_frames.empty())
@@ -495,7 +468,7 @@ void Game::draw_animated_gif_text(float x, float y)
         }
         sf::Sprite gif_sprite(gif_frames[current_gif_frame]);
         gif_sprite.setPosition({x, y});
-        gif_sprite.setScale({0.5f,0.5f});
+        gif_sprite.setScale({0.5f, 0.5f});
         okno.draw(gif_sprite);
     }
 }
@@ -504,7 +477,7 @@ void Game::vykreslit()
 {
     okno.clear();
 
-    // Chọn hình nền phù hợp với trạng thái trò chơi
+    //Chọn hình nền phù hợp với trạng thái trò chơi
     sf::Sprite bg(tex_gameBg);
     if (stav == Stav_Hra::Hlavni_menu)
         bg.setTexture(tex_bgMenu);
@@ -520,22 +493,19 @@ void Game::vykreslit()
     txt.setCharacterSize(28);
     txt.setFillColor(sf::Color(0, 255, 100)); // Màu xanh Neon đặc trưng phòng thí nghiệm quân sự
 
-    if (stav == Stav_Hra::Hlavni_menu)
-    {
+    if (stav == Stav_Hra::Hlavni_menu){
         sf::Sprite btn(tex_btnPlay);
         btn.setPosition({680.f, 850.f}); // Canh nút bấm chính diện tâm màn hình
         okno.draw(btn);
     }
     else if (stav == Stav_Hra::Ukazat_rules){
         sf::Sprite sp(tex_rules);
-        sp.setScale({0.8f,0.8f});
-        sp.setPosition({400.f, 150.f}); // Căn chính giữa nền
+        sp.setScale({0.8f, 0.8f});
+        sp.setPosition({400.f, 100.f}); // Căn chính giữa nền
         okno.draw(sp);
         draw_animated_gif_text(650.f, 850.f);
-    
     }
-    else if (stav == Stav_Hra::InputName)
-    {
+    else if (stav == Stav_Hra::InputName){
         sf::Sprite sp(tex_zadaiCharakteru);
         sp.setPosition({500.f, 200.f});
         okno.draw(sp);
@@ -545,13 +515,11 @@ void Game::vykreslit()
         okno.draw(txt);
         draw_animated_gif_text(650.f, 850.f);
     }
-    else if (stav == Stav_Hra::Ukazat_lvl)
-    {
+    else if (stav == Stav_Hra::Ukazat_lvl){
         sf::Texture lvl_tex;
-        if (lvl_tex.loadFromFile(seznam[current_level_idx].link_p))
-        {
+        if (lvl_tex.loadFromFile(seznam[current_level_idx].link_p)){
             sf::Sprite sp(lvl_tex);
-            sp.setScale({0.8f,0.8f});
+            sp.setScale({0.8f, 0.8f});
             sp.setPosition({200.f, 80.0f}); // Vừa khít tâm nền màn hình vẽ
             okno.draw(sp);
         }
@@ -560,10 +528,10 @@ void Game::vykreslit()
         txt.setPosition({680.f, 850.f});
         okno.draw(txt);
     }
-    else if (stav == Stav_Hra::AskQuestion)
-    {
+    else if (stav == Stav_Hra::AskQuestion){
         txt.setString(seznam[current_level_idx].seznam[current_question_idx].question);
-        txt.setPosition({650.f, 550.f});
+        txt.setScale({0.8f, 0.8f});
+        txt.setPosition({500.f, 550.f});
         okno.draw(txt);
 
         sf::Sprite box(tex_zadejOdpoved);
@@ -577,26 +545,45 @@ void Game::vykreslit()
         input_disp.setPosition({650.f, 438.f}); // Căn lề lọt thỏm trong ảnh zadej_question.png
         okno.draw(input_disp);
     }
-    else if (stav == Stav_Hra::WrongAnswer)
-    {
+    else if (stav == Stav_Hra::Ukazat_mk_inx){
+        sf::Sprite sb(tex_vynoril_cislo);
+        sb.setScale({1.0f, 1.0f});
+        sb.setPosition({100.f, 0.0f}); // Căn chính giữa nền
+        okno.draw(sb);
+
+        // Chuỗi thông báo số mật mã bằng tiếng Séc UTF-8
+        std::string thong_bao_ma = "Ziskal jsi " + std::to_string(current_level_idx + 1) + ". cislo tajneho hesla: " + std::to_string(heslo[current_level_idx]);
+        txt.setString(thong_bao_ma);
+        txt.setCharacterSize(24);
+        txt.setFillColor(sf::Color::Yellow);
+        txt.setPosition({600.f, 600.f});
+        okno.draw(txt);
+
+        draw_animated_gif_text(650.f, 850.f);
+    }
+    else if (stav == Stav_Hra::WrongAnswer){
         sf::Sprite sb(tex_chyba);
-        sb.setPosition({480.f,200.f});
+        sb.setPosition({480.f, 200.f});
         okno.draw(sb);
         txt.setString(player_input);
         txt.setFillColor(sf::Color::White);
-        txt.setPosition({650.f, 470.f});
+        txt.setPosition({650.f, 480.f});
         okno.draw(txt);
     }
-    else if (stav == Stav_Hra::hadat_heslo)
-    {
+    
+    if (stav == Stav_Hra::hadat_heslo){
         sf::Sprite sp(tex_zadejteHeslo);
-        sp.setPosition({400.f, 100.f});
+        sp.setPosition({500.f, 100.f});
         okno.draw(sp);
 
         txt.setString("Pocet zbyvajicich pokusu: " + std::to_string(zbylo_pokusu));
         txt.setFillColor(sf::Color::Red);
-        txt.setPosition({520.f, 320.f});
+        txt.setPosition({500.f, 320.f});
         okno.draw(txt);
+
+        sf::Sprite sb(tex_box);
+        sb.setPosition({500.f,520.f});
+        okno.draw(sb);
 
         sf::Text inp(font);
         inp.setString(player_input);
@@ -613,13 +600,12 @@ void Game::vykreslit()
             f_txt.setString(line);
             f_txt.setCharacterSize(22);
             f_txt.setFillColor(sf::Color::Yellow);
-            f_txt.setPosition({420.f, start_y});
+            f_txt.setPosition({600.f, start_y});
             okno.draw(f_txt);
             start_y += 40.f;
         }
     }
-    else if (stav == Stav_Hra::OpenChest)
-    {
+    else if (stav == Stav_Hra::OpenChest){
         sf::Sprite sp(tex_tvojePokladJe);
         sp.setPosition({400.f, 150.f});
         okno.draw(sp);
@@ -628,15 +614,13 @@ void Game::vykreslit()
         std::ifstream file("poklad.txt");
         std::vector<std::string> poklady;
         std::string line;
-        while (std::getline(file, line))
-        {
+        while (std::getline(file, line)){
             if (!line.empty())
                 poklady.push_back(line);
         }
         file.close();
 
-        if (!poklady.empty())
-        {
+        if (!poklady.empty()){
             int rand_idx = rand() % poklady.size();
             txt.setString("POKLAD [" + std::to_string(rand_idx + 1) + "]: " + poklady[rand_idx]);
             txt.setCharacterSize(35);
@@ -646,8 +630,7 @@ void Game::vykreslit()
 
             // Tự động mở video tương ứng hệ thống index bắt đầu từ 1
             static bool video_opened = false;
-            if (!video_opened)
-            {
+            if (!video_opened){
                 system(("start video_reakce\\treasure_" + std::to_string(rand_idx + 1) + ".mp4").c_str());
                 video_opened = true;
             }

@@ -17,7 +17,8 @@ enum class Stav_Hra {
     Ukazat_rules,      
     InputName,         
     Ukazat_lvl,        
-    AskQuestion,       
+    AskQuestion,
+    Ukazat_mk_inx, 
     WrongAnswer,       
     hadat_heslo,       
     OpenChest,         
@@ -45,6 +46,7 @@ struct Level {
 
 class Game {
 private:
+    bool level_bezchyb = true;
     sf::RenderWindow okno;
     sf::Font font;
     static sf::Music bg_song;
@@ -60,6 +62,8 @@ private:
     sf::Texture tex_zadejteHeslo;
     sf::Texture tex_tvojePokladJe;
     sf::Texture tex_btnPlay;
+    sf::Texture tex_vynoril_cislo;
+    sf::Texture tex_box;
 
     sf::Sprite sprite_bg;
 
@@ -96,7 +100,7 @@ private:
     
     std::string naMale(std::string text);
     bool kontrolovatOdpoved(const std::string& answer, const std::vector<std::string>& correct_answers);
-    std::string filter_first_number_string(const std::string& input);
+    std::string hledat_prvni_cislo(const std::string& input);
 
 public:
     Game();
