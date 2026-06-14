@@ -18,7 +18,8 @@ enum class Stav_Hra {
     InputName,         
     Ukazat_lvl,        
     AskQuestion,
-    Ukazat_mk_inx, 
+    Ukazat_mk_inx,
+    Neodhali_cislo, 
     WrongAnswer,       
     hadat_heslo,       
     OpenChest,         
@@ -48,8 +49,12 @@ class Game {
 private:
     bool level_bezchyb = true;
     sf::RenderWindow okno;
+    bool opened_video = false;
     sf::Font font;
     static sf::Music bg_song;
+
+    int poklad_index = -1;       // Lưu chỉ số kho báu bốc được
+    std::string poklad_text = "";
 
     // Bộ quản lý hệ thống Texture đồ họa theo kịch bản mới
     sf::Texture tex_bgMenu;
@@ -64,6 +69,7 @@ private:
     sf::Texture tex_btnPlay;
     sf::Texture tex_vynoril_cislo;
     sf::Texture tex_box;
+    sf::Texture tex_neodhali;
 
     sf::Sprite sprite_bg;
 
