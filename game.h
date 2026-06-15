@@ -7,9 +7,7 @@
 #include <vector>
 #include <string>
 #include <windows.h>
-#include <algorithm>
 #include <ctime>
-#include <memory>
 #include <fstream>
 
 enum class Stav_Hra {
@@ -39,7 +37,6 @@ struct Otazka {
 };
 
 struct Level {
-    std::string jmeno_level;
     std::string link_p; 
     std::vector<Otazka> seznam;
     std::string link_v;
@@ -51,7 +48,8 @@ private:
     sf::RenderWindow okno;
     bool opened_video = false;
     sf::Font font;
-    static sf::Music bg_song;
+    //static 
+    sf::Music bg_song;
 
     int poklad_index = -1;       // Lưu chỉ số kho báu bốc được
     std::string poklad_text = "";
@@ -92,7 +90,6 @@ private:
     // Hệ thống biến cho vòng đoán mật mã phức hợp
     int zbylo_pokusu; 
     std::vector<std::string> feedback_lines; 
-    std::string trung_khớp_thong_bao;
 
     // Quản lý thời gian chuyển cảnh tự động
     sf::Clock timer;

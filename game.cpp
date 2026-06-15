@@ -1,69 +1,33 @@
 #include "game.h"
 
-#include <filesystem>
+//sf::Music Game::bg_song;
 
-
-
-sf::Music Game::bg_song;
-
-Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Edition"), sprite_bg(tex_bgMenu)
-
-{
-
-    system("chcp 65001");
-
-    SetConsoleOutputCP(65001);
-
-    SetConsoleCP(65001);
-
+Game::Game() : okno(sf::VideoMode({1600, 1000}), "The Etherium - SFML 3.0 Edition"), sprite_bg(tex_bgMenu){
     okno.setFramerateLimit(60);
-
     srand(static_cast<unsigned int>(time(0)));
-
     stav = Stav_Hra::Hlavni_menu;
-
     current_level_idx = 0;
-
     current_question_idx = 0;
-
     pocet_chyb = 0;
-
     player_input = "";
-
     current_gif_frame = 0;
 
-    if (!font.openFromFile("C:/Windows/Fonts/Consola.ttf"))
-
-    {
-
+    if (!font.openFromFile("C:/Windows/Fonts/Consola.ttf")){
         std::cerr << "Chyba: Nepodarilo se nacist font Consola.ttf" << std::endl;
     }
 
     tvorit_heslo();
-
     tvorit_level();
-
     load_assets();
-
     sprite_bg.setTexture(tex_bgMenu);
 
-    if (bg_song.getStatus() == sf::SoundStream::Status::Stopped)
-
-    {
-
-        if (!bg_song.openFromFile("background_song.mp3"))
-
-        {
-
+    if (bg_song.getStatus() == sf::SoundStream::Status::Stopped){
+        if (!bg_song.openFromFile("background_song.mp3")){
             std::cout << "Loi: Khong the tai file nhac background_song.mp3!" << std::endl;
-
             return;
         }
-
         bg_song.setLooping(true); // Lặp lại vô hạn
-
         bg_song.setVolume(20.f); // Âm lượng 40%
-
         bg_song.play(); // Phát nhạc
     }
 }
@@ -89,7 +53,6 @@ void Game::tvorit_heslo(){
 void Game::tvorit_level(){
     // level1
     Level lvl1;
-    lvl1.jmeno_level = "Level 1 - Foam Apocalypse";
     lvl1.link_p = "Obrazky/level/lvl1.png";
     lvl1.link_v = "video_reakce\\elephant.mp4";
     Otazka o1_1;
@@ -108,7 +71,6 @@ void Game::tvorit_level(){
 
     // level2
     Level lvl2;
-    lvl2.jmeno_level = "Level 2 - Midnight Neon";
     lvl2.link_p = "Obrazky/level/lvl2.png";
     lvl2.link_v = "video_reakce\\luminol.mp4";
     Otazka o2_1;
@@ -127,7 +89,6 @@ void Game::tvorit_level(){
 
     // level3
     Level lvl3;
-    lvl3.jmeno_level = "Level 3 - Howl of the Hellhound";
     lvl3.link_p = "Obrazky/level/lvl3.png";
     lvl3.link_v = "video_reakce\\barking_dog.mp4";
     Otazka o3_1;
@@ -147,7 +108,6 @@ void Game::tvorit_level(){
     // level4
 
     Level lvl4;
-    lvl4.jmeno_level = "Level 4 - Iron Rain";
     lvl4.link_p = "Obrazky/level/lvl4.png";
     lvl4.link_v = "video_reakce\\thermit.mp4";
     Otazka o4_1;
@@ -166,7 +126,6 @@ void Game::tvorit_level(){
 
     // level5
     Level lvl5;
-    lvl5.jmeno_level = "Level 5 - Abyssal Detonation";
     lvl5.link_p = "Obrazky/level/lvl5.png";
     lvl5.link_v = "video_reakce\\bubble.mp4";
     Otazka o5_1;
@@ -229,18 +188,22 @@ void Game::pocet_pokusu_podle_chyb(){
 }
 
 std::string Game::naMale(std::string text){
-    std::transform(text.begin(), text.end(), text.begin(), ::tolower);
+    for (int i=0; i<text.length();i++){
+        text[i]  = tolower(text[i]);
+    }
+    // std::transform(text.begin(), text.end(), text.begin(), ::tolower);
     return text;
 }
 
-bool Game::kontrolovatOdpoved(const std::string &answer, const std::vector<std::string> &correct_answers){
-    std::string low_ans = naMale(answer);
+bool Game::kontrolovatOdpoved(const std::string &player_answer, const std::vector<std::string> &correct_answers){
+    std::string low_ans = naMale(player_answer);
     for (const auto &correct : correct_answers){
         if (low_ans == naMale(correct))
             return true;
     }
     return false;
 }
+
 std::string Game::hledat_prvni_cislo(const std::string &input){
     std::string result = "";
     for (char c : input){
@@ -256,22 +219,21 @@ std::string Game::hledat_prvni_cislo(const std::string &input){
 void Game::play(){
     while (okno.isOpen()){
         zpracovat_udalosti();
-        // Xử lý đếm giờ tự động cho quy trình nạp cảnh nền chơi game
+        //
         if (stav == Stav_Hra::Ukazat_rules && !timer_started){
             timer.restart();
             timer_started = true;
         }
         if (stav == Stav_Hra::Ukazat_lvl){
 
-            if (timer.getElapsedTime().asSeconds() >= 15.f){
+            if (timer.getElapsedTime().asSeconds() >= 15.f){//xem het 15s chua
                 stav = Stav_Hra::AskQuestion;
                 player_input = "";
             }
         }
-        if (stav == Stav_Hra::OpenChest && !opened_video) {
-            // Nếu chữ đã hiện lên được hơn 2.5 giây
+        if (stav == Stav_Hra::OpenChest && !opened_video) {//neu video chua duoc mo
             if (timer.getElapsedTime().asSeconds() >= 5.0f) { 
-                if (poklad_index != -1) {
+                if (poklad_index != -1) {// he da tim duoc video hop le
                     // Mở video phần thưởng
                     system(("start video_poklad\\video" + std::to_string(poklad_index + 1) + ".mp4").c_str());
                     opened_video = true; // Đánh dấu đã mở để không bị lặp lại
@@ -310,11 +272,7 @@ void Game::zpracovat_udalosti(){
                 zpracovat_stisk_enteru();
             }
         }
-
     }
-    
-
-
 }
 
 void Game::zpracovat_textovy_vstup(char znak){
@@ -446,7 +404,15 @@ void Game::zpracovat_stisk_enteru(){
             }
             else{
                 match_all = false;
-                if (std::find(heslo.begin(), heslo.end(), digit_input) != heslo.end()){
+
+                bool nasli = false;
+                for (int cislo : heslo) {
+                    if (cislo == digit_input) {
+                        nasli = true;
+                        break;
+                    }
+                }
+                if (nasli){
                     feedback_lines.push_back("Cislo " + std::to_string(digit_input) + " je spravne, ale na SPATNEM miste.");
                 }
                 else{
@@ -636,7 +602,7 @@ void Game::vykreslit(){
 
         // Hiển thị từng dòng manh mối gợi ý giải mã mật mã
 
-        float start_y = 540.f;
+        float start_y = 630.f;
 
         for (const auto &line : feedback_lines){
 
