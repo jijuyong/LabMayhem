@@ -248,7 +248,7 @@ void Game::zpracovat_udalosti(){
     while (const std::optional<sf::Event> event = okno.pollEvent()){
         if (event->is<sf::Event::Closed>()){
             okno.close();
-        }
+        }// bắt sự kiện
 
         if (const auto *mouseEvent = event->getIf<sf::Event::MouseButtonPressed>()){
             if (stav == Stav_Hra::Hlavni_menu &&
@@ -261,15 +261,15 @@ void Game::zpracovat_udalosti(){
                 if (mousePos.x >= 650.f && mousePos.x <= 950.f && mousePos.y >= 550.f && mousePos.y <= 630.f){
                     okno.close();
                 }
-            }
+            }//bắt toạ độ click
         }
 
         if (const auto *textEvent = event->getIf<sf::Event::TextEntered>()){
-            zpracovat_textovy_vstup(textEvent->unicode);
+            zpracovat_textovy_vstup(textEvent->unicode); // bắt chữ
         }
         if (const auto *keyEvent = event->getIf<sf::Event::KeyPressed>()){
             if (keyEvent->code == sf::Keyboard::Key::Enter){
-                zpracovat_stisk_enteru();
+                zpracovat_stisk_enteru();// bắt enter
             }
         }
     }
@@ -281,7 +281,7 @@ void Game::zpracovat_textovy_vstup(char znak){
         if (znak == 8){
             if (!player_input.empty())
                 player_input.pop_back();
-        }
+        }//neu ky tu cuoi la space thi xoa
 
         else if (znak >= 32 && znak != 127 && player_input.length() < 30){
             player_input += static_cast<char>(znak);
@@ -294,7 +294,7 @@ void Game::zpracovat_stisk_enteru(){
         if (timer.getElapsedTime().asSeconds() >= 2.f){
             stav = Stav_Hra::InputName;
             player_input = "";
-        }
+        } // qua 2s ms enter moi hieu qua
     }
     else if (stav == Stav_Hra::InputName){
         if (!player_input.empty()){
@@ -506,7 +506,7 @@ void Game::vykreslit(){
         sf::Sprite sp(tex_zadaiCharakteru);
         sp.setPosition({500.f, 200.f});
         okno.draw(sp);
-
+        
         txt.setString(player_input);
         txt.setPosition({650.f, 438.f}); // Vị trí đè khớp lên khung nhập liệu ô trống của PNG
         okno.draw(txt);
@@ -632,12 +632,10 @@ void Game::vykreslit(){
     }
     
     else if (stav == Stav_Hra::Neodhali_cislo) {
-        // 1. Giao diện tự động lấy game_bg vì ở đầu hàm vykreslit() bạn đã thiết lập mặc định cho các stav khác là tex_gameBg rồi.
-
         // 2. Vẽ ảnh thông báo cislo_neodhali.png ra chính giữa màn hình
         sf::Sprite sp(tex_neodhali);
         sp.setScale({1.0f,1.0f});
-        sp.setPosition({100.f, 0.f}); // Bạn có thể tự căn chỉnh lại tọa độ X, Y cho đẹp mắt
+        sp.setPosition({100.f, 0.f});
         okno.draw(sp);
 
         draw_animated_gif_text(650.f,850.f);
