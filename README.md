@@ -1,8 +1,4 @@
-Zde je kompletní a profesionální soubor README.md pro tvůj projekt na GitHubu. Obsahuje přehled hry, technologický stack, návod k instalaci a spuštění, a také popis struktury kódu.
 
-Text je strukturovaný tak, aby okamžitě zaujal každého, kdo navštíví tvůj repozitář.
-
-Markdown
 # The Etherium - SFML 3.0 Edition 🧪
 
 **The Etherium** je interaktivní vzdělávací a logická hra vytvořená v C++ za použití multimediální knihovny SFML 3.0. Hráč se ocitá v prostředí vojenské chemické laboratoře, kde musí správně odpovídat na chemické a laboratorní otázky, aby získal indicie k tajnému heslu a odemkl ukrytý poklad.

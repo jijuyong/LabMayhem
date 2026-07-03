@@ -1,1 +1,6 @@
-build/
+build/*
+
+!build/video_*
+!build/Obrazky
+!build/background_song.mp3
+!build/poklad.txt
